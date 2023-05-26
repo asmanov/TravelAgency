@@ -12,14 +12,16 @@ namespace TravelAgency
         private static DataBaseSingleton instance = null;
         private static readonly object padlock = new object();
         private readonly SqlConnection connection;
+        private readonly SqlDataAdapter adapter;
         private readonly string connStr = "Server=localhost\\SQLEXPRESS;" +
-                "Database=UserDB;" +
+                "Database=TravelAgency;" +
                 "Trusted_Connection=True;" +
                 "TrustServerCertificate=True;";
         private DataBaseSingleton()
         {
             connection = new SqlConnection(connStr);
             connection.Open();
+            adapter = new SqlDataAdapter("SELECT * FROM [User]", connection);
         }
 
         public static DataBaseSingleton Instance
@@ -40,6 +42,10 @@ namespace TravelAgency
         public SqlConnection GetConnection()
         {
             return connection;
+        }
+        public SqlDataAdapter GetAdapter()
+        {
+            return adapter;
         }
     }
 }
