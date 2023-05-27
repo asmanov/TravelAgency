@@ -16,7 +16,7 @@ namespace TravelAgency
             WhereFrom = whereFrom ?? throw new ArgumentNullException(nameof(whereFrom));
             Cost = cost;
             AmountOfDay = amountOfDay;
-            Date = date;
+            DateStart = date;
         }
 
         public string Hotel { get; set; }
@@ -25,7 +25,7 @@ namespace TravelAgency
         public string WhereFrom { get; set; }
         public double Cost { get; set; }
         public int AmountOfDay { get; set; }
-        DateTime Date { get; set; }
+        DateTime DateStart { get; set; }
 
     }
 }
