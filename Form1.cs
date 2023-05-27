@@ -19,7 +19,7 @@ namespace TravelAgency
             InitializeComponent();
             dbSingleton = DataBaseSingleton.Instance;
             connection = dbSingleton.GetConnection();
-            adapter = dbSingleton.GetAdapter();
+            adapter = new SqlDataAdapter("SELECT * FROM [User]", connection);
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
@@ -57,8 +57,8 @@ namespace TravelAgency
             
             DataTable dataTable = new DataTable();
             DataSet ds = new DataSet();
-            adapter.Fill(ds);
-            dataTable = ds.Tables[0];
+            adapter.Fill(dataTable);
+            //dataTable = ds.Tables[0];
             foreach (DataRow row in dataTable.Rows)
             {
                 users.Add(new User((int)row[0], (string)row[1], (string)row[2]));
@@ -71,11 +71,13 @@ namespace TravelAgency
                     {
                         AdminForm adminForm = new AdminForm();
                         adminForm.Show();
+                        adapter.Dispose();
                     }
                     else
                     {
                         UserForm userForm = new UserForm();
                         userForm.Show();
+                        adapter.Dispose();
                     }
                 }
                 else radioButton2.Checked = true;
@@ -89,7 +91,8 @@ namespace TravelAgency
                     newRow["Password"] = textBox3.Text;
                     dataTable.Rows.Add(newRow);
                     SqlCommandBuilder commandBuilder = new SqlCommandBuilder(adapter);
-                    adapter.Update(ds);
+                    adapter.Update(dataTable);
+                    adapter.Dispose();
                     UserForm userForm = new UserForm();
                     userForm.Show();
                     
